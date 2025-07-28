@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microeconomía - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="article-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">← Volver al inicio</a>
+            <h1>Microeconomía</h1>
+            <p>Oferta, demanda y algoritmos de optimización</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-content">
+            <h2>Introducción a la Microeconomía</h2>
+            <p>La <strong>microeconomía</strong> estudia el comportamiento de individuos y empresas en la toma de decisiones sobre la asignación de recursos limitados. Sus principios se pueden modelar y optimizar usando algoritmos computacionales.</p>
+
+            <h2>Ley de Oferta y Demanda</h2>
+
+            <h3>Función de Demanda</h3>
+            <p>La demanda representa la cantidad de un bien que los consumidores están dispuestos a comprar a diferentes precios:</p>
+
+            <div class="code-block">
+<pre><code>class FuncionDemanda:
+    def __init__(self, a, b):
+        """
+        Función de demanda lineal: Qd = a - b*P
+        a: intercepto (demanda máxima cuando P=0)
+        b: pendiente (sensibilidad al precio)
+        """
+        self.a = a
+        self.b = b
+    
+    def cantidad_demandada(self, precio):
+        """Calcula la cantidad demandada para un precio dado"""
+        qd = self.a - self.b * precio
+        return max(0, qd)  # La demanda no puede ser negativa
+    
+    def precio_maximo(self):
+        """Precio máximo que los consumidores pagarían"""
+        return self.a / self.b
+    
+    def ingreso_total(self, precio):
+        """Calcula el ingreso total a un precio dado"""
+        cantidad = self.cantidad_demandada(precio)
+        return precio * cantidad
+
+# Ejemplo: Demanda de smartphones
+demanda_smartphones = FuncionDemanda(1000, 2)  # Qd = 1000 - 2*P
+
+# Calcular demanda a diferentes precios
+precios = [100, 200, 300, 400]
+print("=== ANÁLISIS DE DEMANDA ===")
+for precio in precios:
+    cantidad = demanda_smartphones.cantidad_demandada(precio)
+    ingreso = demanda_smartphones.ingreso_total(precio)
+    print("Precio: $" + str(precio) + " -> Cantidad: " + str(cantidad) + " -> Ingreso: $" + str(ingreso))</code></pre>
+    </div>
+
+            <h3>Función de Oferta</h3>
+            <p>La oferta representa la cantidad que los productores están dispuestos a vender:</p>
+
+            <div class="code-block">
+<pre><code>class FuncionOferta:
+    def __init__(self, c, d):
+        """
+        Función de oferta lineal: Qs = c + d*P
+        c: intercepto (puede ser negativo)
+        d: pendiente (sensibilidad al precio)
+        """
+        self.c = c
+        self.d = d
+    
+    def cantidad_ofertada(self, precio):
+        """Calcula la cantidad ofertada para un precio dado"""
+        qs = self.c + self.d * precio
+        return max(0, qs)  # La oferta no puede ser negativa
+    
+    def precio_minimo(self):
+        """Precio mínimo para que haya oferta positiva"""
+        return max(0, -self.c / self.d)
+    
+    def costo_total(self, precio):
+        """Estima el costo total de producción"""
+        cantidad = self.cantidad_ofertada(precio)
+        # Asumimos costo marginal constante
+        costo_marginal = precio * 0.7  # 70% del precio
+        return cantidad * costo_marginal
+
+# Ejemplo: Oferta de smartphones
+oferta_smartphones = FuncionOferta(-100, 3)  # Qs = -100 + 3*P
+
+print("\n=== ANÁLISIS DE OFERTA ===")
+for precio in precios:
+    cantidad = oferta_smartphones.cantidad_ofertada(precio)
+    costo = oferta_smartphones.costo_total(precio)
+    print("Precio: $" + str(precio) + " -> Cantidad: " + str(cantidad) + " -> Costo: $" + str(round(costo, 2)))</code></pre>
+    </div>
+
+            <h2>Equilibrio de Mercado</h2>
+            <p>El equilibrio ocurre donde la oferta iguala a la demanda:</p>
+
+            <div class="code-block">
+<pre><code>class MercadoEquilibrio:
+    def __init__(self, demanda, oferta):
+        self.demanda = demanda
+        self.oferta = oferta
+    
+    def encontrar_equilibrio(self):
+        """
+        Encuentra el punto de equilibrio resolviendo:
+        Qd = Qs
+        a - b*P = c + d*P
+        """
+        # Resolver para P: a - b*P = c + d*P
+        # a - c = b*P + d*P
+        # a - c = P(b + d)
+        # P = (a - c) / (b + d)
+        
+        precio_eq = (self.demanda.a - self.oferta.c) / (self.demanda.b + self.oferta.d)
+        cantidad_eq = self.demanda.cantidad_demandada(precio_eq)
+        
+        return precio_eq, cantidad_eq
+    
+    def analizar_mercado(self):
+        """Análisis completo del mercado"""
+        precio_eq, cantidad_eq = self.encontrar_equilibrio()
+        
+        # Calcular excedentes
+        excedente_consumidor = 0.5 * (self.demanda.precio_maximo() - precio_eq) * cantidad_eq
+        precio_min_oferta = self.oferta.precio_minimo()
+        excedente_productor = 0.5 * (precio_eq - precio_min_oferta) * cantidad_eq
+        
+        return {
+            'precio_equilibrio': precio_eq,
+            'cantidad_equilibrio': cantidad_eq,
+            'excedente_consumidor': excedente_consumidor,
+            'excedente_productor': excedente_productor,
+            'bienestar_total': excedente_consumidor + excedente_productor
+        }
+
+# Crear mercado y encontrar equilibrio
+mercado = MercadoEquilibrio(demanda_smartphones, oferta_smartphones)
+analisis = mercado.analizar_mercado()
+
+print("\n=== EQUILIBRIO DE MERCADO ===")
+print("Precio de equilibrio: $" + str(round(analisis['precio_equilibrio'], 2)))
+print("Cantidad de equilibrio: " + str(round(analisis['cantidad_equilibrio'], 0)))
+print("Excedente del consumidor: $" + str(round(analisis['excedente_consumidor'], 2)))
+print("Excedente del productor: $" + str(round(analisis['excedente_productor'], 2)))
+print("Bienestar total: $" + str(round(analisis['bienestar_total'], 2)))</code></pre>
+    </div>
+
+            <h2>Algoritmo de Subasta</h2>
+            <div class="code-block">
+<pre><code>class SubastaSegundoPrecio:
+    def __init__(self):
+        self.ofertas = []
+    
+    def agregar_oferta(self, participante, valor):
+        """Agregar oferta de un participante"""
+        self.ofertas.append((participante, valor))
+    
+    def determinar_ganador(self):
+        """Algoritmo de subasta de segundo precio"""
+        if len(self.ofertas) &lt; 2:
+            return None, 0
+        
+        # Ordenar ofertas de mayor a menor
+        ofertas_ordenadas = sorted(self.ofertas, key=lambda x: x[1], reverse=True)
+        
+        ganador = ofertas_ordenadas[0][0]
+        precio_a_pagar = ofertas_ordenadas[1][1]  # Segundo precio más alto
+        
+        return ganador, precio_a_pagar
+    
+    def mostrar_resultados(self):
+        """Muestra todos los resultados de la subasta"""
+        if not self.ofertas:
+            print("No hay ofertas")
+            return
+        
+        ganador, precio = self.determinar_ganador()
+        print("=== RESULTADOS DE SUBASTA ===")
+        print("Todas las ofertas:")
+        for participante, valor in sorted(self.ofertas, key=lambda x: x[1], reverse=True):
+            print("  " + participante + ": $" + str(valor))
+        
+        if ganador:
+            print("\nGanador: " + ganador)
+            print("Precio a pagar: $" + str(precio))
+
+# Ejemplo de subasta
+subasta = SubastaSegundoPrecio()
+subasta.agregar_oferta("Alice", 100)
+subasta.agregar_oferta("Bob", 150)
+subasta.agregar_oferta("Charlie", 120)
+subasta.agregar_oferta("Diana", 180)
+
+subasta.mostrar_resultados()</code></pre>
+    </div>
+
+            <h2>Conclusiones</h2>
+            <p>La microeconomía proporciona herramientas matemáticas que se pueden implementar algorítmicamente para:</p>
+
+            <ol>
+                <li><strong>Modelar comportamiento del mercado:</strong> Funciones de oferta y demanda</li>
+                <li><strong>Optimizar precios y producción:</strong> Maximización de ingresos y beneficios</li>
+                <li><strong>Analizar elasticidades:</strong> Sensibilidad de la demanda al precio</li>
+                <li><strong>Diseñar mecanismos de subasta:</strong> Asignación eficiente de recursos</li>
+                <li><strong>Predecir equilibrios de mercado:</strong> Puntos de estabilidad económica</li>
+            </ol>
+
+            <p>Estos conceptos son fundamentales en economía computacional, teoría de juegos algorítmica y optimización de recursos. La combinación de principios económicos con algoritmos computacionales permite resolver problemas complejos de asignación y optimización en el mundo real.</p>
+
+            <h3>Aplicaciones Modernas:</h3>
+            <ul>
+                <li><strong>E-commerce:</strong> Algoritmos de precios dinámicos</li>
+                <li><strong>Publicidad digital:</strong> Subastas de anuncios en tiempo real</li>
+                <li><strong>Mercados financieros:</strong> Algoritmos de trading automatizado</li>
+                <li><strong>Plataformas digitales:</strong> Modelos de dos lados (two-sided markets)</li>
+                <li><strong>Economía compartida:</strong> Algoritmos de matching y precios</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Blog de Estructura de Datos y Algoritmos</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

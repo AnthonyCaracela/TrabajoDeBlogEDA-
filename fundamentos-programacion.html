@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de Programación - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="article-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">← Volver al inicio</a>
+            <h1>Fundamentos de Programación</h1>
+            <p>Variables, funciones y control de flujo</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-content">
+            <h2>Variables y Tipos de Datos</h2>
+            <p>Las <strong>variables</strong> son contenedores que almacenan valores que pueden cambiar durante la ejecución del programa.</p>
+
+            <h3>Tipos de datos básicos:</h3>
+            <div class="code-block">
+<pre><code># Enteros
+edad = 25
+contador = 0
+
+# Flotantes
+precio = 19.99
+pi = 3.14159
+
+# Cadenas
+nombre = "Juan"
+mensaje = 'Hola mundo'
+
+# Booleanos
+es_estudiante = True
+esta_activo = False
+
+# Listas
+numeros = [1, 2, 3, 4, 5]
+nombres = ["Ana", "Luis", "María"]</code></pre>
+            </div>
+
+            <h2>Funciones</h2>
+            <p>Las <strong>funciones</strong> son bloques de código reutilizable que realizan una tarea específica.</p>
+
+            <h3>Estructura de una función:</h3>
+            <div class="code-block">
+<pre><code>def nombre_funcion(parametros):
+    """Documentación de la función"""
+    # Cuerpo de la función
+    return resultado
+
+# Ejemplo práctico
+def calcular_area_rectangulo(base, altura):
+    """Calcula el área de un rectángulo"""
+    area = base * altura
+    return area
+
+# Uso de la función
+resultado = calcular_area_rectangulo(5, 3)
+print("El área es:", resultado)  # El área es: 15</code></pre>
+            </div>
+
+            <h2>Control de Flujo</h2>
+
+            <h3>Estructuras condicionales:</h3>
+            <div class="code-block">
+<pre><code># if-elif-else
+nota = 85
+
+if nota &gt;= 90:
+    calificacion = "A"
+elif nota &gt;= 80:
+    calificacion = "B"
+elif nota &gt;= 70:
+    calificacion = "C"
+else:
+    calificacion = "F"
+
+print("Tu calificación es:", calificacion)</code></pre>
+            </div>
+
+            <h3>Bucles:</h3>
+            <div class="code-block">
+<pre><code># Bucle for
+for i in range(5):
+    print("Iteración", i)
+
+# Bucle while
+contador = 0
+while contador &lt; 5:
+    print("Contador:", contador)
+    contador += 1
+
+# Bucle for con listas
+frutas = ["manzana", "banana", "naranja"]
+for fruta in frutas:
+    print("Me gusta la", fruta)</code></pre>
+            </div>
+
+            <h2>Buenas Prácticas</h2>
+            <ol>
+                <li><strong>Nombres descriptivos:</strong> Usa nombres claros para variables y funciones</li>
+                <li><strong>Comentarios:</strong> Documenta tu código</li>
+                <li><strong>Funciones pequeñas:</strong> Una función debe hacer una sola cosa</li>
+                <li><strong>Evita repetición:</strong> Principio DRY (Don't Repeat Yourself)</li>
+                <li><strong>Manejo de errores:</strong> Usa try-except para errores potenciales</li>
+            </ol>
+
+            <h3>Ejemplo de código bien estructurado:</h3>
+            <div class="code-block">
+<pre><code>def es_numero_primo(numero):
+    """
+    Determina si un número es primo
+    Args: numero (int): El número a verificar
+    Returns: bool: True si es primo, False en caso contrario
+    """
+    if numero &lt; 2:
+        return False
+    
+    for i in range(2, int(numero ** 0.5) + 1):
+        if numero % i == 0:
+            return False
+    
+    return True
+
+def encontrar_primos(limite):
+    """Encuentra todos los números primos hasta un límite"""
+    primos = []
+    for num in range(2, limite + 1):
+        if es_numero_primo(num):
+            primos.append(num)
+    return primos
+
+# Uso de las funciones
+numeros_primos = encontrar_primos(20)
+print("Números primos hasta 20:", numeros_primos)
+# Resultado: [2, 3, 5, 7, 11, 13, 17, 19]</code></pre>
+            </div>
+
+            <p>Estos fundamentos son la base sobre la cual se construyen algoritmos más complejos y estructuras de datos avanzadas. Dominar estos conceptos es esencial para cualquier programador.</p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Blog de Estructura de Datos y Algoritmos</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

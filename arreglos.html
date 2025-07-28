@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arreglos - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="article-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">← Volver al inicio</a>
+            <h1>Arreglos</h1>
+            <p>Manipulación y algoritmos esenciales</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-content">
+            <h2>¿Qué son los Arreglos?</h2>
+            <p>Un <strong>arreglo</strong> (array) es una estructura de datos que almacena elementos del mismo tipo en posiciones de memoria contiguas. Cada elemento se identifica por un índice.</p>
+
+            <h3>Características principales:</h3>
+            <ul>
+                <li><strong>Acceso aleatorio:</strong> O(1) para acceder a cualquier elemento</li>
+                <li><strong>Tamaño fijo:</strong> En muchos lenguajes (dinámico en Python)</li>
+                <li><strong>Elementos homogéneos:</strong> Mismo tipo de dato</li>
+                <li><strong>Indexación:</strong> Comienza en 0</li>
+            </ul>
+
+            <h2>Operaciones Básicas</h2>
+
+            <h3>Declaración e inicialización:</h3>
+            <div class="code-block">
+<pre><code># Diferentes formas de crear arreglos
+numeros = [1, 2, 3, 4, 5]
+nombres = ["Ana", "Luis", "María"]
+matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+# Arreglo de tamaño fijo con valores iniciales
+ceros = [0] * 10  # [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+rango = list(range(1, 11))  # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</code></pre>
+            </div>
+
+            <h3>Acceso y modificación:</h3>
+            <div class="code-block">
+<pre><code>arr = [10, 20, 30, 40, 50]
+
+# Acceso por índice
+print(arr[0])    # 10 (primer elemento)
+print(arr[-1])   # 50 (último elemento)
+print(arr[2])    # 30 (tercer elemento)
+
+# Modificación
+arr[2] = 35      # [10, 20, 35, 40, 50]
+
+# Slicing (rebanadas)
+print(arr[1:4])  # [20, 35, 40]
+print(arr[:3])   # [10, 20, 35]
+print(arr[2:])   # [35, 40, 50]</code></pre>
+            </div>
+
+            <h2>Algoritmos de Búsqueda</h2>
+
+            <h3>Búsqueda Lineal:</h3>
+            <div class="code-block">
+<pre><code>def busqueda_lineal(arr, objetivo):
+    """
+    Busca un elemento en el arreglo secuencialmente
+    Complejidad: O(n)
+    """
+    for i in range(len(arr)):
+        if arr[i] == objetivo:
+            return i  # Retorna el índice donde se encontró
+    return -1  # No se encontró
+
+# Ejemplo de uso
+numeros = [64, 34, 25, 12, 22, 11, 90]
+indice = busqueda_lineal(numeros, 22)
+if indice != -1:
+    print("Elemento encontrado en índice:", indice)
+else:
+    print("Elemento no encontrado")</code></pre>
+            </div>
+
+            <h3>Búsqueda Binaria:</h3>
+            <div class="code-block">
+<pre><code>def busqueda_binaria(arr, objetivo):
+    """
+    Busca un elemento en un arreglo ordenado
+    Complejidad: O(log n)
+    """
+    izquierda, derecha = 0, len(arr) - 1
+    
+    while izquierda &lt;= derecha:
+        medio = (izquierda + derecha) // 2
+        
+        if arr[medio] == objetivo:
+            return medio
+        elif arr[medio] &lt; objetivo:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+    
+    return -1
+
+# Ejemplo de uso (arreglo debe estar ordenado)
+numeros_ordenados = [11, 12, 22, 25, 34, 64, 90]
+indice = busqueda_binaria(numeros_ordenados, 25)
+print("Elemento encontrado en índice:", indice)</code></pre>
+            </div>
+
+            <h2>Algoritmos de Ordenamiento</h2>
+
+            <h3>Ordenamiento Burbuja:</h3>
+            <div class="code-block">
+<pre><code>def ordenamiento_burbuja(arr):
+    """
+    Ordena un arreglo usando el algoritmo burbuja
+    Complejidad: O(n²)
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        # Flag para optimización
+        intercambio = False
+        
+        for j in range(0, n - i - 1):
+            if arr[j] &gt; arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                intercambio = True
+        
+        # Si no hubo intercambios, el arreglo ya está ordenado
+        if not intercambio:
+            break
+    
+    return arr
+
+# Ejemplo
+numeros = [64, 34, 25, 12, 22, 11, 90]
+print("Arreglo original:", numeros)
+ordenamiento_burbuja(numeros)
+print("Arreglo ordenado:", numeros)</code></pre>
+            </div>
+
+            <h3>Ordenamiento por Selección:</h3>
+            <div class="code-block">
+<pre><code>def ordenamiento_seleccion(arr):
+    """
+    Ordena un arreglo usando selección
+    Complejidad: O(n²)
+    """
+    n = len(arr)
+    
+    for i in range(n):
+        # Encontrar el índice del elemento mínimo
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] &lt; arr[min_idx]:
+                min_idx = j
+        
+        # Intercambiar el elemento mínimo con el primer elemento
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    
+    return arr
+
+# Ejemplo
+numeros = [64, 34, 25, 12, 22, 11, 90]
+print("Ordenamiento por selección:", ordenamiento_seleccion(numeros.copy()))</code></pre>
+            </div>
+
+            <h3>Ordenamiento Rápido (QuickSort):</h3>
+            <div class="code-block">
+<pre><code>def quicksort(arr):
+    """
+    Ordena un arreglo usando quicksort
+    Complejidad promedio: O(n log n)
+    """
+    if len(arr) &lt;= 1:
+        return arr
+    
+    pivote = arr[len(arr) // 2]
+    izquierda = [x for x in arr if x &lt; pivote]
+    medio = [x for x in arr if x == pivote]
+    derecha = [x for x in arr if x &gt; pivote]
+    
+    return quicksort(izquierda) + medio + quicksort(derecha)
+
+# Ejemplo
+numeros = [64, 34, 25, 12, 22, 11, 90]
+numeros_ordenados = quicksort(numeros)
+print("QuickSort resultado:", numeros_ordenados)</code></pre>
+            </div>
+
+            <h2>Arreglos Multidimensionales</h2>
+            <div class="code-block">
+<pre><code># Matriz 3x3
+matriz = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Acceso a elementos
+print(matriz[1][2])  # 6 (fila 1, columna 2)
+
+# Recorrido de matriz
+print("Recorrido de matriz:")
+for i in range(len(matriz)):
+    for j in range(len(matriz[i])):
+        print("matriz[" + str(i) + "][" + str(j) + "] = " + str(matriz[i][j]))
+
+# Suma de elementos de una matriz
+def sumar_matriz(matriz):
+    suma = 0
+    for fila in matriz:
+        for elemento in fila:
+            suma += elemento
+    return suma
+
+print("Suma total:", sumar_matriz(matriz))</code></pre>
+            </div>
+
+            <h2>Ejemplo Práctico: Sistema de Calificaciones</h2>
+            <div class="code-block">
+<pre><code>class SistemaCalificaciones:
+    def __init__(self):
+        self.estudiantes = []
+        self.calificaciones = []
+    
+    def agregar_estudiante(self, nombre, calificaciones):
+        self.estudiantes.append(nombre)
+        self.calificaciones.append(calificaciones)
+    
+    def calcular_promedio(self, indice_estudiante):
+        if 0 &lt;= indice_estudiante &lt; len(self.calificaciones):
+            califs = self.calificaciones[indice_estudiante]
+            return sum(califs) / len(califs)
+        return 0
+    
+    def obtener_mejor_estudiante(self):
+        mejor_promedio = -1
+        mejor_estudiante = ""
+        
+        for i in range(len(self.estudiantes)):
+            promedio = self.calcular_promedio(i)
+            if promedio &gt; mejor_promedio:
+                mejor_promedio = promedio
+                mejor_estudiante = self.estudiantes[i]
+        
+        return mejor_estudiante, mejor_promedio
+    
+    def mostrar_reporte(self):
+        print("=== REPORTE DE CALIFICACIONES ===")
+        for i in range(len(self.estudiantes)):
+            nombre = self.estudiantes[i]
+            promedio = self.calcular_promedio(i)
+            print(nombre + ": " + "{:.2f}".format(promedio))
+
+# Uso del sistema
+sistema = SistemaCalificaciones()
+sistema.agregar_estudiante("Ana", [85, 92, 78, 96])
+sistema.agregar_estudiante("Luis", [76, 84, 88, 82])
+sistema.agregar_estudiante("María", [94, 89, 92, 97])
+
+sistema.mostrar_reporte()
+mejor, promedio = sistema.obtener_mejor_estudiante()
+print("\nMejor estudiante: " + mejor + " con promedio " + "{:.2f}".format(promedio))</code></pre>
+            </div>
+
+            <h2>Complejidad Temporal</h2>
+            <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                <tr style="background: #f8f9fa;">
+                    <th style="border: 1px solid #ddd; padding: 0.5rem;">Operación</th>
+                    <th style="border: 1px solid #ddd; padding: 0.5rem;">Complejidad</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Acceso por índice</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(1)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Búsqueda lineal</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(n)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Búsqueda binaria</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(log n)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Inserción al final</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(1)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Inserción al inicio</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(n)</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">Ordenamiento (QuickSort)</td>
+                    <td style="border: 1px solid #ddd; padding: 0.5rem;">O(n log n)</td>
+                </tr>
+            </table>
+
+            <p>Los arreglos son fundamentales en programación y la base para estructuras de datos más complejas como pilas, colas y tablas hash. Dominar su manipulación es esencial para cualquier programador.</p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Blog de Estructura de Datos y Algoritmos</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

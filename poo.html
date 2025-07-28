@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programación Orientada a Objetos - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="article-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">← Volver al inicio</a>
+            <h1>Programación Orientada a Objetos</h1>
+            <p>Clases, herencia y polimorfismo</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-content">
+            <h2>¿Qué es la POO?</h2>
+            <p>La <strong>Programación Orientada a Objetos</strong> es un paradigma de programación que organiza el código en objetos que contienen datos (atributos) y código (métodos).</p>
+
+            <h3>Principios fundamentales:</h3>
+            <ol>
+                <li><strong>Encapsulación:</strong> Ocultar detalles internos</li>
+                <li><strong>Herencia:</strong> Reutilizar código de clases padre</li>
+                <li><strong>Polimorfismo:</strong> Múltiples formas de un mismo método</li>
+                <li><strong>Abstracción:</strong> Simplificar conceptos complejos</li>
+            </ol>
+
+            <h2>Clases y Objetos</h2>
+
+            <h3>Definición de una clase:</h3>
+            <div class="code-block">
+<pre><code>class Estudiante:
+    # Atributo de clase (compartido por todas las instancias)
+    universidad = "Universidad Nacional"
+    
+    def __init__(self, nombre, edad, carrera):
+        # Atributos de instancia
+        self.nombre = nombre
+        self.edad = edad
+        self.carrera = carrera
+        self.materias = []
+    
+    # Métodos de instancia
+    def agregar_materia(self, materia):
+        self.materias.append(materia)
+        print(materia + " agregada a " + self.nombre)
+    
+    def mostrar_info(self):
+        return self.nombre + ", " + str(self.edad) + " años, estudia " + self.carrera
+    
+    def calcular_carga_academica(self):
+        return len(self.materias)
+    
+    def __str__(self):
+        return "Estudiante: " + self.nombre
+
+# Crear objetos (instancias)
+estudiante1 = Estudiante("Ana García", 20, "Ingeniería de Sistemas")
+estudiante2 = Estudiante("Luis Pérez", 22, "Matemáticas")
+
+# Usar métodos
+estudiante1.agregar_materia("Estructura de Datos")
+estudiante1.agregar_materia("Algoritmos")
+print(estudiante1.mostrar_info())
+print("Carga académica: " + str(estudiante1.calcular_carga_academica()) + " materias")</code></pre>
+            </div>
+
+            <h2>Encapsulación</h2>
+            <p>La encapsulación protege los datos internos del objeto usando atributos privados:</p>
+
+            <div class="code-block">
+<pre><code>class CuentaBancaria:
+    def __init__(self, titular, saldo_inicial=0):
+        self.titular = titular
+        self.__saldo = saldo_inicial  # Atributo privado
+        self.__historial = []  # Historial de transacciones
+    
+    def depositar(self, cantidad):
+        if cantidad &gt; 0:
+            self.__saldo += cantidad
+            self.__historial.append("Depósito: +$" + str(cantidad))
+            return True
+        return False
+    
+    def retirar(self, cantidad):
+        if 0 &lt; cantidad &lt;= self.__saldo:
+            self.__saldo -= cantidad
+            self.__historial.append("Retiro: -$" + str(cantidad))
+            return True
+        return False
+    
+    def get_saldo(self):
+        return self.__saldo
+    
+    def get_historial(self):
+        return self.__historial.copy()  # Retorna una copia
+    
+    def __str__(self):
+        return "Cuenta de " + self.titular + ": $" + str(self.__saldo)
+
+# Uso de la clase
+cuenta = CuentaBancaria("María López", 1000)
+cuenta.depositar(500)
+cuenta.retirar(200)
+print("Saldo actual: $" + str(cuenta.get_saldo()))
+print("Historial:", cuenta.get_historial())
+# print(cuenta.__saldo)  # Error: atributo privado no accesible</code></pre>
+            </div>
+
+            <h2>Herencia</h2>
+            <p>La herencia permite crear nuevas clases basadas en clases existentes:</p>
+
+            <div class="code-block">
+<pre><code># Clase padre (superclase)
+class Vehiculo:
+    def __init__(self, marca, modelo, año):
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
+        self.encendido = False
+        self.velocidad = 0
+    
+    def encender(self):
+        self.encendido = True
+        return self.marca + " " + self.modelo + " encendido"
+    
+    def apagar(self):
+        self.encendido = False
+        self.velocidad = 0
+        return self.marca + " " + self.modelo + " apagado"
+    
+    def acelerar(self, incremento):
+        if self.encendido:
+            self.velocidad += incremento
+            return "Velocidad: " + str(self.velocidad) + " km/h"
+        return "El vehículo está apagado"
+    
+    def info(self):
+        return self.marca + " " + self.modelo + " (" + str(self.año) + ")"
+
+# Clase hija (subclase)
+class Automovil(Vehiculo):
+    def __init__(self, marca, modelo, año, puertas):
+        super().__init__(marca, modelo, año)  # Llamar al constructor padre
+        self.puertas = puertas
+        self.aire_acondicionado = False
+    
+    def abrir_puertas(self):
+        return "Abriendo las " + str(self.puertas) + " puertas"
+    
+    def activar_aire(self):
+        if self.encendido:
+            self.aire_acondicionado = True
+            return "Aire acondicionado activado"
+        return "Enciende el auto primero"
+    
+    def info(self):  # Sobrescribir método padre
+        return super().info() + " - " + str(self.puertas) + " puertas"
+
+class Motocicleta(Vehiculo):
+    def __init__(self, marca, modelo, año, cilindrada):
+        super().__init__(marca, modelo, año)
+        self.cilindrada = cilindrada
+    
+    def hacer_wheelie(self):
+        if self.encendido and self.velocidad &gt; 30:
+            return "¡Haciendo wheelie!"
+        return "Necesitas más velocidad para hacer wheelie"
+    
+    def info(self):
+        return super().info() + " - " + str(self.cilindrada) + "cc"
+
+# Uso de herencia
+auto = Automovil("Toyota", "Corolla", 2023, 4)
+moto = Motocicleta("Honda", "CBR", 2023, 600)
+
+print(auto.info())
+print(auto.encender())
+print(auto.acelerar(50))
+print(auto.activar_aire())
+
+print(moto.info())
+print(moto.encender())
+print(moto.acelerar(40))
+print(moto.hacer_wheelie())</code></pre>
+            </div>
+
+            <h2>Polimorfismo</h2>
+            <p>El polimorfismo permite que objetos de diferentes clases respondan al mismo método:</p>
+
+            <div class="code-block">
+<pre><code>import math
+
+class Forma:
+    def area(self):
+        pass
+    
+    def perimetro(self):
+        pass
+    
+    def describir(self):
+        return "Soy una forma con área " + str(round(self.area(), 2)) + " y perímetro " + str(round(self.perimetro(), 2))
+
+class Rectangulo(Forma):
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
+    
+    def area(self):
+        return self.base * self.altura
+    
+    def perimetro(self):
+        return 2 * (self.base + self.altura)
+
+class Circulo(Forma):
+    def __init__(self, radio):
+        self.radio = radio
+    
+    def area(self):
+        return math.pi * self.radio ** 2
+    
+    def perimetro(self):
+        return 2 * math.pi * self.radio
+
+class Triangulo(Forma):
+    def __init__(self, lado1, lado2, lado3):
+        self.lado1 = lado1
+        self.lado2 = lado2
+        self.lado3 = lado3
+    
+    def area(self):
+        # Fórmula de Herón
+        s = (self.lado1 + self.lado2 + self.lado3) / 2
+        return math.sqrt(s * (s - self.lado1) * (s - self.lado2) * (s - self.lado3))
+    
+    def perimetro(self):
+        return self.lado1 + self.lado2 + self.lado3
+
+# Polimorfismo en acción
+formas = [
+    Rectangulo(5, 3),
+    Circulo(4),
+    Triangulo(3, 4, 5)
+]
+
+print("=== CÁLCULO DE FORMAS ===")
+for i, forma in enumerate(formas, 1):
+    print("Forma " + str(i) + ": " + forma.describir())
+    print("Área:", round(forma.area(), 2))
+    print("Perímetro:", round(forma.perimetro(), 2))
+    print("---")</code></pre>
+            </div>
+
+            <h2>Ventajas de la POO</h2>
+            <ol>
+                <li><strong>Reutilización de código:</strong> Herencia y composición</li>
+                <li><strong>Mantenibilidad:</strong> Código más organizado y fácil de modificar</li>
+                <li><strong>Escalabilidad:</strong> Fácil agregar nuevas funcionalidades</li>
+                <li><strong>Modelado natural:</strong> Representa mejor el mundo real</li>
+                <li><strong>Encapsulación:</strong> Protege la integridad de los datos</li>
+                <li><strong>Polimorfismo:</strong> Flexibilidad en el diseño</li>
+            </ol>
+
+            <p>La POO es fundamental para desarrollar aplicaciones complejas y es ampliamente utilizada en el desarrollo de software moderno. Permite crear código más organizado, reutilizable y fácil de mantener.</p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Blog de Estructura de Datos y Algoritmos</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

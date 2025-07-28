@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recurrencia y Árboles - Blog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="article-header">
+        <div class="container">
+            <a href="index.html" class="back-btn">← Volver al inicio</a>
+            <h1>Recurrencia y Árboles</h1>
+            <p>Fundamentos y aplicaciones de algoritmos recursivos</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <article class="article-content">
+            <h2>¿Qué es la Recurrencia?</h2>
+            <p>La <strong>recurrencia</strong> es una técnica de programación donde una función se llama a sí misma para resolver un problema más pequeño del mismo tipo. Es fundamental en el diseño de algoritmos y especialmente útil para trabajar con estructuras de datos como árboles.</p>
+
+            <h3>Componentes de una función recursiva:</h3>
+            <ul>
+                <li><strong>Caso base:</strong> Condición que detiene la recursión</li>
+                <li><strong>Caso recursivo:</strong> La función se llama a sí misma con un problema más pequeño</li>
+            </ul>
+
+            <h3>Ejemplo: Factorial</h3>
+            <div class="code-block">
+<pre><code>def factorial(n):
+    # Caso base
+    if n &lt;= 1:
+        return 1
+    # Caso recursivo
+    return n * factorial(n - 1)
+
+# Ejemplo de uso
+print("Factorial de 5:", factorial(5))  # Resultado: 120</code></pre>
+            </div>
+
+            <h2>Árboles: Estructura de Datos Jerárquica</h2>
+            <p>Un <strong>árbol</strong> es una estructura de datos jerárquica compuesta por nodos conectados por aristas, donde existe un nodo raíz y cada nodo puede tener cero o más hijos.</p>
+
+            <h3>Tipos de árboles:</h3>
+            <ul>
+                <li><strong>Árbol binario:</strong> Cada nodo tiene máximo 2 hijos</li>
+                <li><strong>Árbol binario de búsqueda:</strong> Árbol binario ordenado</li>
+                <li><strong>Árbol AVL:</strong> Árbol binario auto-balanceado</li>
+                <li><strong>Árbol B:</strong> Árbol de múltiples hijos usado en bases de datos</li>
+            </ul>
+
+            <h3>Implementación de un Árbol Binario</h3>
+            <div class="code-block">
+<pre><code>class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.izquierdo = None
+        self.derecho = None
+
+class ArbolBinario:
+    def __init__(self):
+        self.raiz = None
+    
+    def insertar(self, valor):
+        if self.raiz is None:
+            self.raiz = Nodo(valor)
+        else:
+            self._insertar_recursivo(self.raiz, valor)
+    
+    def _insertar_recursivo(self, nodo, valor):
+        if valor &lt; nodo.valor:
+            if nodo.izquierdo is None:
+                nodo.izquierdo = Nodo(valor)
+            else:
+                self._insertar_recursivo(nodo.izquierdo, valor)
+        else:
+            if nodo.derecho is None:
+                nodo.derecho = Nodo(valor)
+            else:
+                self._insertar_recursivo(nodo.derecho, valor)</code></pre>
+            </div>
+
+            <h3>Recorridos de Árboles</h3>
+            <div class="code-block">
+<pre><code>def recorrido_inorden(nodo):
+    if nodo:
+        recorrido_inorden(nodo.izquierdo)
+        print(nodo.valor)
+        recorrido_inorden(nodo.derecho)
+
+def recorrido_preorden(nodo):
+    if nodo:
+        print(nodo.valor)
+        recorrido_preorden(nodo.izquierdo)
+        recorrido_preorden(nodo.derecho)
+
+def recorrido_postorden(nodo):
+    if nodo:
+        recorrido_postorden(nodo.izquierdo)
+        recorrido_postorden(nodo.derecho)
+        print(nodo.valor)</code></pre>
+            </div>
+
+            <h2>Aplicaciones Prácticas</h2>
+            <ol>
+                <li><strong>Sistemas de archivos:</strong> Estructura jerárquica de carpetas</li>
+                <li><strong>Árboles de decisión:</strong> Machine learning y análisis</li>
+                <li><strong>Parsers:</strong> Análisis sintáctico de código</li>
+                <li><strong>Bases de datos:</strong> Índices B-tree para búsquedas eficientes</li>
+            </ol>
+
+            <h2>Complejidad Temporal</h2>
+            <ul>
+                <li><strong>Búsqueda en árbol binario balanceado:</strong> O(log n)</li>
+                <li><strong>Inserción:</strong> O(log n)</li>
+                <li><strong>Eliminación:</strong> O(log n)</li>
+                <li><strong>Recorrido completo:</strong> O(n)</li>
+            </ul>
+
+            <p>La recursión y los árboles son conceptos fundamentales que aparecen en muchos algoritmos avanzados y son esenciales para entender estructuras de datos más complejas.</p>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Blog de Estructura de Datos y Algoritmos</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
